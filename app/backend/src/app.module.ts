@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './categories/categories.module';
 import { MoviesModule } from './movies/movies.module';
 import { VideoSourcesModule } from './video-sources/video-sources.module';
+import { CommentsModule } from './comments/comments.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -25,6 +26,8 @@ import { VideoSourcesModule } from './video-sources/video-sources.module';
     MoviesModule,
 
     VideoSourcesModule,
+
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
