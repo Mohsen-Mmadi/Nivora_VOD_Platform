@@ -9,6 +9,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { MoviesModule } from './movies/movies.module';
 import { VideoSourcesModule } from './video-sources/video-sources.module';
 import { CommentsModule } from './comments/comments.module';
+import { FavoritesModule } from './favorites/favorites.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,6 +29,8 @@ import { CommentsModule } from './comments/comments.module';
     VideoSourcesModule,
 
     CommentsModule,
+
+    FavoritesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
