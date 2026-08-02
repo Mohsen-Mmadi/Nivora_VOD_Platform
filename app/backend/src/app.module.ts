@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './categories/categories.module';
+import { MoviesModule } from './movies/movies.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,6 +20,8 @@ import { CategoriesModule } from './categories/categories.module';
     AuthModule,
 
     CategoriesModule,
+
+    MoviesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
