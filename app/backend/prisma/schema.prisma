@@ -11,88 +11,99 @@ enum Role {
   ADMIN
 }
 
+enum VideoProvider {
+  DIRECT
+  APARAT
+  YOUTUBE
+  OTHER
+}
+
 model User {
-  id Int @id @default(autoincrement())
-
-  email String @unique
-
-  password String
-
-  role Role @default(USER)
-
-  comments Comment[]
-
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  password  String
+  role      Role       @default(USER)
+  name      String?
+  comments  Comment[]
   favorites Favorite[]
 
+  
   createdAt DateTime @default(now())
-
   updatedAt DateTime @updatedAt
 }
 
 model Movie {
-  id Int @id @default(autoincrement())
-
-  title String
-
+  id          Int    @id @default(autoincrement())
+  title       String
+  slug        String @unique
   description String
-
-  posterUrl String
-
-  videoUrl String
+  posterUrl   String
 
   duration Int?
-
-  year Int?
+  year     Int?
 
   categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 
-  category Category @relation(fields: [categoryId], references: [id])
-
-  comments Comment[]
-
+  sources   VideoSource[] // 👈 جایگزین videoUrl
+  comments  Comment[]
   favorites Favorite[]
 
   createdAt DateTime @default(now())
-
   updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([year])
+}
+
+model VideoSource {
+  id      Int   @id @default(autoincrement())
+  movieId Int
+  movie   Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  provider VideoProvider @default(OTHER)
+  url      String
+  quality  String? // "720p", "1080p"
+  language String? // "fa", "en"
+  isActive Boolean       @default(true)
+
+  createdAt DateTime @default(now())
+
+  @@index([movieId])
 }
 
 model Category {
-  id Int @id @default(autoincrement())
-
-  name String @unique
-
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
   movies Movie[]
 }
 
 model Comment {
-  id Int @id @default(autoincrement())
-
+  id   Int    @id @default(autoincrement())
   text String
 
-  userId Int
-
+  userId  Int
   movieId Int
-
-  user User @relation(fields: [userId], references: [id])
-
-  movie Movie @relation(fields: [movieId], references: [id])
+  user    User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie   Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([movieId])
+  @@index([userId])
 }
 
 model Favorite {
-  id Int @id @default(autoincrement())
-
-  userId Int
-
+  id      Int @id @default(autoincrement())
+  userId  Int
   movieId Int
 
-  user User @relation(fields: [userId], references: [id])
-
-  movie Movie @relation(fields: [movieId], references: [id])
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
   @@unique([userId, movieId])
+  @@index([movieId])
 }
