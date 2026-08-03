@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   ParseIntPipe,
+  Query
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
@@ -16,6 +17,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from '@prisma/client';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { FindMoviesQueryDto } from './dto/find-movies.query.dto';
 
 @Controller('movies')
 export class MoviesController {
@@ -31,9 +33,10 @@ export class MoviesController {
 
   // دریافت لیست همه فیلم‌ها (عمومی)
   @Get()
-  findAll() {
-    return this.moviesService.findAll();
+  findAll(@Query() query: FindMoviesQueryDto) {
+    return this.moviesService.findAll(query);
   }
+
 
   // دریافت اطلاعات کامل یک فیلم (عمومی)
 
